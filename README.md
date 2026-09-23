@@ -287,7 +287,7 @@ The system follows a modular architecture:
 
 Clone the repository:
 
-git clone https://github.com/Vercetius/ai-incident-response-agent.git
+git clone https://github.com/franciscosilva5/ai-incident-response-agent.git
 
 Enter the project:
 
