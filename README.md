@@ -4,7 +4,7 @@ An end-to-end AI-assisted incident response system for triage, anomaly detection
 
 ## Live Demo
 
-Streamlit deployment coming soon.
+https://mk7xvbwqcdv5up5acwg7df.streamlit.app/
 
 ## Overview
 
