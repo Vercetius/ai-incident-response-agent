@@ -1,0 +1,65 @@
+[
+  {
+    "incident_id": "HIST-001",
+    "title": "Checkout database pool exhaustion",
+    "service": "checkout-api",
+    "severity": "high",
+    "root_cause": "database connection pool exhaustion caused by leaked application connections",
+    "resolution": "increased connection pool temporarily and deployed a fix for leaked connections",
+    "summary": "Checkout requests became slow and began timing out. Database connection pool utilization reached 98% and application workers could not acquire new connections."
+  },
+  {
+    "incident_id": "HIST-002",
+    "title": "Expired authentication signing key",
+    "service": "auth-service",
+    "severity": "critical",
+    "root_cause": "expired authentication signing certificate",
+    "resolution": "rotated the signing certificate and restarted authentication workers",
+    "summary": "Users experienced widespread authentication failures. JWT validation failed and HTTP 401 responses increased sharply after the signing certificate expired."
+  },
+  {
+    "incident_id": "HIST-003",
+    "title": "Email processing backlog during campaign",
+    "service": "email-worker",
+    "severity": "medium",
+    "root_cause": "worker capacity was insufficient for a sudden increase in queued messages",
+    "resolution": "scaled worker replicas and monitored queue depth until backlog cleared",
+    "summary": "Email queue depth increased rapidly and workers remained fully occupied. Processing delay exceeded normal thresholds."
+  },
+  {
+    "incident_id": "HIST-004",
+    "title": "Third-party payment gateway degradation",
+    "service": "payment-service",
+    "severity": "high",
+    "root_cause": "external payment provider experienced elevated latency",
+    "resolution": "enabled provider failover and increased retry backoff",
+    "summary": "Payment requests timed out and provider latency exceeded six seconds. Retry traffic increased significantly."
+  },
+  {
+    "incident_id": "HIST-005",
+    "title": "Recommendation worker memory leak",
+    "service": "recommendation-api",
+    "severity": "medium",
+    "root_cause": "memory leak in recommendation worker process",
+    "resolution": "restarted affected workers and fixed object retention in application code",
+    "summary": "Memory usage increased continuously until workers were terminated by out-of-memory protection."
+  },
+  {
+    "incident_id": "HIST-006",
+    "title": "Product API cache outage",
+    "service": "product-api",
+    "severity": "high",
+    "root_cause": "invalid Redis cache configuration",
+    "resolution": "restored previous cache configuration and restarted product API workers",
+    "summary": "Product API returned elevated HTTP 500 errors after Redis connections began failing."
+  },
+  {
+    "incident_id": "HIST-007",
+    "title": "Order API regression after release",
+    "service": "order-service",
+    "severity": "critical",
+    "root_cause": "faulty application deployment",
+    "resolution": "rolled back the release to the previous stable application version",
+    "summary": "Order creation began failing immediately after a new deployment. Error rate increased above 70%."
+  }
+]
