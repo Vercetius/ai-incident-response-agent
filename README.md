@@ -267,21 +267,49 @@ pytest -q
 
 ## Architecture
 
-The system follows a modular architecture:
+The system follows a modular incident-response pipeline:
 
-- src/models.py — structured incident models
-- src/log_ingestion.py — loading and normalization
-- src/triage.py — severity and priority classification
-- src/anomaly_detection.py — metric and log anomaly detection
-- src/retrieval.py — semantic runbook and historical retrieval
-- src/root_cause.py — root-cause analysis
-- src/action_planner.py — response planning
-- src/risk.py — confidence and operational risk
-- src/pipeline.py — end-to-end orchestration
-- app/app.py — Streamlit dashboard
-- scripts/generate_incidents.py — synthetic incident generation
-- scripts/evaluate_system.py — evaluation suite
-- tests/ — automated tests
+Incident Logs and Metrics  
+→ Normalization  
+→ Severity Triage + Anomaly Detection  
+→ Semantic Runbook Retrieval  
+→ Historical Incident Retrieval  
+→ Root-Cause Analysis  
+→ Action Planning  
+→ Confidence + Operational Risk  
+→ Human Approval or Recommended Response
+
+The architecture deliberately separates deterministic operational logic from semantic retrieval and optional LLM analysis.
+
+Core modules:
+
+- `src/models.py` — structured incident models
+- `src/log_ingestion.py` — loading and normalization
+- `src/triage.py` — severity and priority classification
+- `src/anomaly_detection.py` — metric and log anomaly detection
+- `src/retrieval.py` — semantic runbook and historical retrieval
+- `src/root_cause.py` — root-cause analysis
+- `src/action_planner.py` — response planning
+- `src/risk.py` — confidence and operational risk
+- `src/pipeline.py` — end-to-end orchestration
+- `app/app.py` — Streamlit dashboard
+- `scripts/generate_incidents.py` — synthetic incident generation
+- `scripts/evaluate_system.py` — evaluation suite
+- `tests/` — automated tests
+
+## Design Decisions and Trade-offs
+
+The system combines deterministic logic, semantic retrieval, and optional language-model analysis rather than delegating the complete incident workflow to an LLM.
+
+**Deterministic triage and risk rules** keep high-impact routing decisions reproducible and inspectable. The trade-off is that thresholds must be manually defined and adapted to the operating environment.
+
+**Semantic retrieval** is performed before root-cause analysis so recommendations can be grounded in runbooks and historical incidents. Retrieval quality therefore depends on the coverage and quality of the indexed knowledge base.
+
+**Historical fallback** allows the system to remain useful when the external language model is unavailable. The fallback is more constrained, but it avoids making the entire pipeline dependent on one external service.
+
+**Human approval gates** prevent the prototype from autonomously executing potentially disruptive remediation actions.
+
+**Confidence and operational risk are separate concepts.** Confidence represents the strength of the available evidence, while operational risk represents the potential impact of the proposed response. Neither should be interpreted as a statistically calibrated probability.
 
 ## Run Locally
 
